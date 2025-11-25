@@ -43,7 +43,7 @@ public class Ship : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        Rolling();
+        // Rolling();
         Move();
     }
 
