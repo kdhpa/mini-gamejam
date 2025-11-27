@@ -1,14 +1,14 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Ship : MonoBehaviour
+public class Ship : CameraAttachObject
 {
     public float speed = 0f;
     public float ver_view_speed = 1.0f;
     public float hori_view_speed = 1.5f;
 
+    // private CapsuleCollider capsuleCollider;
     private Rigidbody rigid;
-    private CapsuleCollider capsuleCollider;
     private PlayerInput input;
 
     private InputAction move_action;
@@ -18,15 +18,16 @@ public class Ship : MonoBehaviour
     private Vector3 rotate_vec;
 
     public Vector3 velocity = Vector3.zero;
-
-    [SerializeField]
-    private Camera foward_cam;
+    public Vector3 angularVelocity;
 
     private void Awake()
     {
+        camera_objects = GetComponentsInChildren<CameraObject>();
+
         rigid = GetComponent<Rigidbody>();
-        capsuleCollider = GetComponent<CapsuleCollider>();
         input = GetComponent<PlayerInput>();
+
+        // capsuleCollider = GetComponent<CapsuleCollider>();
         InputSetting();
     }
 
@@ -43,7 +44,7 @@ public class Ship : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        // Rolling();
+        velocityRolling();
         Move();
     }
 
@@ -51,13 +52,13 @@ public class Ship : MonoBehaviour
     {
         Vector3 input_move_vec = new Vector3(move_vec.z, move_vec.y, move_vec.x);
 
-        Vector3 foward_vec = foward_cam.transform.forward;
+        Vector3 foward_vec = this.transform.forward;
         Vector3 foward_direction = foward_vec.normalized;
 
-        Vector3 right_vec = foward_cam.transform.right;
+        Vector3 right_vec = this.transform.right;
         Vector3 right_direction = right_vec.normalized;
 
-        Vector3 up_vec = foward_cam.transform.up;
+        Vector3 up_vec = this.transform.up;
         Vector3 up_direction = up_vec.normalized;
 
         Vector3 dir = (foward_direction * input_move_vec.z) + (right_direction * input_move_vec.x) + (up_direction * input_move_vec.y);
@@ -67,11 +68,31 @@ public class Ship : MonoBehaviour
 
         rigid.linearVelocity = velocity;
     }
-
-    private void Rolling()
+    private void velocityRolling()
     {
-        Vector3 input_view_vec = new Vector3(rotate_vec.y, rotate_vec.x, 0);
-        Quaternion deltaRotation = Quaternion.Euler(input_view_vec.x * ver_view_speed * Time.fixedDeltaTime, input_view_vec.y * hori_view_speed * Time.fixedDeltaTime, 0);
-        rigid.MoveRotation(transform.localRotation * deltaRotation);
+        Vector3 input = new Vector3(
+            rotate_vec.y * hori_view_speed,
+            rotate_vec.x * ver_view_speed,
+            0f
+        );
+
+        angularVelocity += input * Time.fixedDeltaTime;
+
+        angularVelocity.x = Mathf.Clamp(angularVelocity.x, -30, 30);
+        angularVelocity.y = Mathf.Clamp(angularVelocity.y, -30, 30);
+
+        angularVelocity *= 0.98f;
+
+        // // 회전 적용 (roll 축 제외)
+        Quaternion q =
+            Quaternion.AngleAxis(angularVelocity.x * Time.fixedDeltaTime, transform.right) *
+            Quaternion.AngleAxis(angularVelocity.y * Time.fixedDeltaTime, transform.up);
+
+
+        Quaternion newRot = q * transform.rotation;
+        Vector3 forward = newRot * Vector3.forward;
+        newRot = Quaternion.LookRotation(forward, Vector3.up);
+
+        transform.rotation = newRot;
     }
 }
