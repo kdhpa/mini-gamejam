@@ -4,6 +4,7 @@ public class Planet : MonoBehaviour
 {
     public float size;
     public float rotationSpeed;
+    public float gravity = 0.98f;
 
     private Vector3 rotation_dir;
     private Color random_color;
@@ -11,7 +12,7 @@ public class Planet : MonoBehaviour
     private void Start()
     {
         RandomDirection();
-        RandomColor();
+        //RandomColor();
 
         mesh_renderer = GetComponent<MeshRenderer>();
         Material mat = mesh_renderer.material;
@@ -34,8 +35,12 @@ public class Planet : MonoBehaviour
         transform.eulerAngles += Vector3.Normalize(rotation_dir) * rotationSpeed * Time.deltaTime;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        
+        GameObject collider_object = other.gameObject;
+        if ( collider_object )
+        {
+            Ship ship = collider_object.GetComponent<Ship>();
+        }
     }
 }

@@ -2,6 +2,7 @@ using UnityEditor;
 using UnityEngine;
 using System.IO;
 using NUnit.Framework;
+using System.Collections.Generic;
 
 public class LevelCreateTool : EditorWindow
 {
@@ -16,7 +17,8 @@ public class LevelCreateTool : EditorWindow
     private bool isStart = false;
     private string path = "Assets\\1. Script\\Level";
 
-    private LevelObject[] objects;
+    private List<LevelObject> objects = new List<LevelObject>();
+    private List<GameObject> game_objects = new List<GameObject>();
 
     private void OnGUI()
     {
@@ -47,34 +49,46 @@ public class LevelCreateTool : EditorWindow
             if ( GUILayout.Button("Planet") )
             {
                 PlaneObject pl_object = CreateInstance<PlaneObject>();
-                name = "\\Plane";
-                name = name + GetFileCount(name) + ".asset";
-                _path += name;
+                pl_object.Init();
+                name = "Plane";
 
-                AssetDatabase.CreateAsset(pl_object, _path);
-                objects[objects.Length + 1] = container.AddObject( pl_object );
+                string secound_path = $"{name}{GetFileCount(name)}.asset";
+                string combine_path = Path.Combine( _path, secound_path );
+
+                AssetDatabase.CreateAsset(pl_object, combine_path);
+                objects.Add(container.AddObject( pl_object ));
+
+                game_objects.Add(Instantiate(pl_object.prefab));
             }
 
             if ( GUILayout.Button("Magel") )
             {
                 MagelObject ma_object = CreateInstance<MagelObject>();
-                name = "\\Magel";
-                name = name + GetFileCount(name) + ".asset";
-                _path += name;
+                ma_object.Init();
+                name = "Magel";
 
-                AssetDatabase.CreateAsset(ma_object, _path);
-                objects[objects.Length + 1] = container.AddObject( ma_object );
+                string secound_path =  $"{name}{GetFileCount(name)}.asset";
+                string combine_path = Path.Combine( _path, secound_path );
+
+                AssetDatabase.CreateAsset(ma_object, combine_path);
+                objects.Add(container.AddObject( ma_object ));
+
+                game_objects.Add(Instantiate(ma_object.prefab));
             }
 
             if ( GUILayout.Button("SpaceStation") )
             {
-                MagelObject ma_object = CreateInstance<MagelObject>();
-                name = "\\SpaceStation";
-                name = name + GetFileCount(name) + ".asset";
-                _path += name;
+                SpaceStation sp_object=  CreateInstance<SpaceStation>();
+                sp_object.Init();
+                name = "SpaceStation";
 
-                AssetDatabase.CreateAsset(ma_object, _path);
-                objects[objects.Length + 1] = container.AddObject( ma_object );
+                string secound_path =  $"{name}{GetFileCount(name)}.asset";
+                string combine_path = Path.Combine( _path, secound_path );
+
+                AssetDatabase.CreateAsset( sp_object, combine_path );
+                objects.Add(container.AddObject( sp_object ));
+
+                game_objects.Add(Instantiate(sp_object.prefab));
             }
 
             GUILayout.Space(20);
@@ -89,7 +103,7 @@ public class LevelCreateTool : EditorWindow
 
     private int GetFileCount( string name )
     {
-        string[] files = Directory.GetFiles(path, name+"*.asset", SearchOption.AllDirectories);
+        string[] files = Directory.GetFiles(path, $"{name}*.asset", SearchOption.AllDirectories);
         int count = files.Length + 1;
 
         return count;

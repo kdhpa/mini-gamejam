@@ -1,29 +1,32 @@
 using System;
+using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 [CreateAssetMenu]
 public class LevelContainer : ScriptableObject
 {
     public int camera_index = 1;
-    public LevelObject[] level_objects;
+    public List<LevelObject> level_objects = new List<LevelObject>();
 
     public void CreateContainer()
     {
-        //level_objects[1] = 
+        
     }
 
     public LevelObject AddObject( GameableObject _object )
     {
-        int length = level_objects.Length;
-        level_objects[length] = new LevelObject(_object); 
-
-        return level_objects[length];
+        LevelObject lv_object = new LevelObject(_object);
+        level_objects.Add( lv_object ); 
+        return lv_object;
     }
 }
 
 public interface IPathObject
 {
     public string PATH {get;}
+
+    public void Init() {}
 }
 
 [Serializable]
@@ -65,6 +68,11 @@ public class PlaneObject : GameableObject, IPathObject
             return path;
         }
     }
+
+    public void Init()
+    {
+        prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+    }
 }
 
 [CreateAssetMenu(menuName = "LevelObject/MagelObject", fileName = "MagelObject")]
@@ -79,5 +87,30 @@ public class MagelObject : GameableObject, IPathObject
             return path;
         }
     }
+
+    public void Init()
+    {
+        prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+        Instantiate(prefab);
+    }
 }
 
+[CreateAssetMenu(menuName = "LevelObject/SpaceStation", fileName = "SpaceStation")]
+[Serializable]
+public class SpaceStation : GameableObject, IPathObject
+{
+    private const string path = "Assets/2. Prefab/Space Station.prefab"; 
+    public string PATH
+    {
+        get
+        {
+            return path;
+        }
+    }
+
+    public void Init()
+    {
+        prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+        Instantiate(prefab);
+    }
+}

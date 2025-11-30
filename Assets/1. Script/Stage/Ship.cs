@@ -7,7 +7,6 @@ public class Ship : CameraAttachObject
     public float ver_view_speed = 1.0f;
     public float hori_view_speed = 1.5f;
 
-    // private CapsuleCollider capsuleCollider;
     private Rigidbody rigid;
     private PlayerInput input;
 
@@ -27,7 +26,6 @@ public class Ship : CameraAttachObject
         rigid = GetComponent<Rigidbody>();
         input = GetComponent<PlayerInput>();
 
-        // capsuleCollider = GetComponent<CapsuleCollider>();
         InputSetting();
     }
 
@@ -44,7 +42,7 @@ public class Ship : CameraAttachObject
     }
     private void FixedUpdate()
     {
-        velocityRolling();
+        Rolling();
         Move();
     }
 
@@ -68,7 +66,7 @@ public class Ship : CameraAttachObject
 
         rigid.linearVelocity = velocity;
     }
-    private void velocityRolling()
+    private void Rolling()
     {
         Vector3 input = new Vector3(
             rotate_vec.y * hori_view_speed,
