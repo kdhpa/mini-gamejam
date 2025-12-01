@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: SpaceStation1
   m_EditorClassIdentifier: Assembly-CSharp::SpaceStation
-  prefab: {fileID: 8307603157612568338, guid: 0daf96c15d4c97b4e9e526f6acfce2f0, type: 3}
+  prefab: {fileID: 3329707978910432756, guid: 2a366dffc2207f840931b8fdc0dc92be, type: 3}

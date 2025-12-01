@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Plane1
   m_EditorClassIdentifier: Assembly-CSharp::PlaneObject
   prefab: {fileID: 6321404138830158620, guid: 52ebe7a546a13d248bc0bbb0bb2de4e4, type: 3}
-  size: {x: 1, y: 1, z: 1}
+  size: {x: 0, y: 0, z: 0}
   is_size_random: 0
-  magel_object: {fileID: 11400000, guid: 578551cf32e7ab749bfbfd28d14cb031, type: 2}
+  magel_object: {fileID: 0}

@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: StartObject
   m_EditorClassIdentifier: Assembly-CSharp::GameableObject
-  prefab: {fileID: 0}
+  prefab: {fileID: 9154954958621655020, guid: cae65ff0d8853d34b8de8a5610615f4b, type: 3}

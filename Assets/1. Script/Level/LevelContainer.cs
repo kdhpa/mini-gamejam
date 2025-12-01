@@ -91,7 +91,6 @@ public class MagelObject : GameableObject, IPathObject
     public void Init()
     {
         prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
-        Instantiate(prefab);
     }
 }
 
@@ -111,6 +110,5 @@ public class SpaceStation : GameableObject, IPathObject
     public void Init()
     {
         prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
-        Instantiate(prefab);
     }
 }
