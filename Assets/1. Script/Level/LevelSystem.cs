@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-public class LevelSystem : MonoBehaviour
+public class LevelSystem : MonoSingleton<LevelSystem>
 {
     public string url = string.Empty;
     private LevelContainer[] containers;
@@ -11,8 +11,9 @@ public class LevelSystem : MonoBehaviour
         containers = Resources.LoadAll<LevelContainer>("Assets/1. Script/Level/Levels");
     }
 
-    private void Start()
+    public void StartLevel( int index )
     {
-        
+        LevelContainer container = containers[index];
+        ControlManager.Instance.StartGame(container);
     }
 }

@@ -78,7 +78,7 @@ public class LevelCreateTool : EditorWindow
 
             if ( GUILayout.Button("SpaceStation") )
             {
-                SpaceStation sp_object=  CreateInstance<SpaceStation>();
+                SpaceStationObject sp_object=  CreateInstance<SpaceStationObject>();
                 sp_object.Init();
                 name = "SpaceStation";
 
