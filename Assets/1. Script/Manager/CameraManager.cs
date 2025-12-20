@@ -4,16 +4,25 @@ using UnityEngine;
 
 public class CameraManager : MonoSingleton<CameraManager>
 {
-    public List<CameraAttachObject> objects = new List<CameraAttachObject>();
-    public List<CameraObject> cam_objects = new List<CameraObject>();
+    private List<CameraAttachObject> attach_objects = new List<CameraAttachObject>();
+    private List<CameraObject> cam_objects = new List<CameraObject>();
     public RenderInfo[] render_infos;
+
+    public List<CameraObject> CAM_OBJECTS
+    {
+        get
+        {
+            return cam_objects;
+        }
+    }
 
     public void addObject( CameraAttachObject attach_obj )
     {
         if ( isCameraObject(attach_obj) )
         {
-            objects.Add(attach_obj);
-            cam_objects.AddRange(attach_obj.camera_objects);
+            attach_objects.Add(attach_obj);
+            CameraObject[] camcam_ojects = attach_obj.cameraObjects;
+            cam_objects.AddRange(camcam_ojects);
         }
     }
 
@@ -21,10 +30,10 @@ public class CameraManager : MonoSingleton<CameraManager>
     {
         if ( isCameraObject(attach_obj) )
         {
-            objects.Remove(attach_obj);
-            for ( int index = 0; index<attach_obj.camera_objects.Length; index++ )
+            attach_objects.Remove(attach_obj);
+            for ( int index = 0; index< attach_obj.cameraObjects.Length; index++ )
             {
-                cam_objects.Remove(attach_obj.camera_objects[index]);
+                cam_objects.Remove(attach_obj.cameraObjects[index]);
             }
         }
     }
@@ -34,14 +43,22 @@ public class CameraManager : MonoSingleton<CameraManager>
         return attach_obj != null && attach_obj is CameraAttachObject;
     }
 
-    public void ActiveCamera()
+    public void ActiveCamera( int index )
     {
-        
+        int render_index = LevelSystem.Instance.CurContainer.camera_index;
+
+        if (cam_objects.Count <= index ) return;
+
+        CameraObject cam_object = cam_objects[index];
+        Camera camera = cam_object.CAMERA;
+        camera.gameObject.SetActive(true);
     }
 
-    public void DeActiveCamera()
+    public void DeActiveCamera(int cam_index )
     {
-        
+        CameraObject cam_object = cam_objects[cam_index];
+        Camera camera = cam_object.CAMERA;
+        camera.gameObject.SetActive(false);
     }
 }
 

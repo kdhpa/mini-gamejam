@@ -9,11 +9,6 @@ public class LevelContainer : ScriptableObject
     public int camera_index = 1;
     public List<LevelObject> level_objects = new List<LevelObject>();
 
-    public void CreateContainer()
-    {
-        //level_objects.Add();
-    }
-
     public LevelObject AddObject( GameableObject _object )
     {
         LevelObject lv_object = new LevelObject(_object);

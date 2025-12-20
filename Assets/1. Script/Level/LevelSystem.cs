@@ -1,19 +1,26 @@
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelSystem : MonoSingleton<LevelSystem>
 {
     public string url = string.Empty;
-    private LevelContainer[] containers;
+    public LevelContainer[] containers;
 
-    private void Awake()
+    private LevelContainer _curContainer;
+    public LevelContainer CurContainer => _curContainer;
+
+    protected override void Awake()
     {
-        containers = Resources.LoadAll<LevelContainer>("Assets/1. Script/Level/Levels");
+        base.Awake();
+        containers = Resources.LoadAll<LevelContainer>(url);
+        _curContainer = containers[0];
     }
 
     public void StartLevel( int index )
     {
         LevelContainer container = containers[index];
-        ControlManager.Instance.StartGame(container);
+        _curContainer = container;
+        SceneManager.LoadScene("GameScene");
     }
 }

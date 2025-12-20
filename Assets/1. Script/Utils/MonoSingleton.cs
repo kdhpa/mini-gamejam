@@ -2,39 +2,38 @@ using UnityEngine;
 
 public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
 {
-    private static object lockObject = new object();
-    private static T instance = null;
-    private static bool IsQuitting = false;
+    private static bool _shuttingDown = false;
+    private static object _locker = new object();
+    private static T _instance = null;
+
+    protected virtual void Awake()
+    {
+        DontDestroyOnLoad(this);
+        _instance = GetComponent<T>();
+    }
 
     public static T Instance
     {
-        // 쓰래드 안전화 - Thread-Safe
         get
         {
-            // 한번에 한 스래드만 lock블럭 실행
-            lock (lockObject)
+            if (_shuttingDown)
             {
-                // 비활성화 됐다면 기존꺼 내비두고 새로 만든다.
-                if ( IsQuitting )
+                Debug.LogWarning("[Instance] Instance" + typeof(T) + "is already destroyed. Returning null.");
+                return null;
+            }
+            lock (_locker)
+            {
+                if (_instance == null)
                 {
-                    return null;
+                    _instance = FindFirstObjectByType<T>();
+                    if (_instance == null)
+                    {
+                        _instance = new GameObject(typeof(T).ToString()).AddComponent<T>();
+                        DontDestroyOnLoad(_instance);
+                    }
                 }
-
-                // instance가 NULL일때 새로 생성한다.
-                if (instance == null )
-                {
-                    instance = GameObject.Instantiate(Resources.Load<T>("MonoSingleton/" + typeof(T).Name));
-                    DontDestroyOnLoad(instance.gameObject);
-                }
-                return instance;
+                return _instance;
             }
         }
-    }
-
-    private void OnDisable()
-    {
-        // 비활성화 된다면 null로 변경
-        IsQuitting = true;
-        instance = null;
     }
 }

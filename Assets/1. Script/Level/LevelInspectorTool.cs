@@ -27,7 +27,6 @@ public class LevelInspectorTool
 
         if (target.position != lastPos)
         {
-            // 🔥 오브젝트가 움직인 순간
             OnObjectMoved();
 
             lastPos = target.position;

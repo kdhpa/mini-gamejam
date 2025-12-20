@@ -16,9 +16,12 @@ public class LevelCreateTool : EditorWindow
     private LevelContainer container;
     private bool isStart = false;
     private string path = "Assets\\1. Script\\Level";
+    private string resource_path = "Assets/Resources/LevelContainer";
 
     private List<LevelObject> objects = new List<LevelObject>();
     private List<GameObject> game_objects = new List<GameObject>();
+
+    private string level_container_name = string.Empty;
 
     private void OnGUI()
     {
@@ -29,15 +32,15 @@ public class LevelCreateTool : EditorWindow
                 isStart = true;
                 container = CreateInstance<LevelContainer>();
 
-                string folder_path = path + "\\Levels";
-
-                string[] files = Directory.GetFiles(folder_path, "*.cs", SearchOption.AllDirectories);
+                string[] files = Directory.GetFiles(resource_path, "*.cs", SearchOption.AllDirectories);
                 int count = files.Length + 1;
-                
-                string a_path = folder_path + "\\Level" + count + ".asset";
+
+                level_container_name = "\\Level" + count + ".asset";
+                string a_path = resource_path + level_container_name;
 
                 AssetDatabase.CreateAsset(container, a_path);
-                container.CreateContainer();
+
+                EditorUtility.SetDirty(container);
             }
         }
 
@@ -59,6 +62,8 @@ public class LevelCreateTool : EditorWindow
                 objects.Add(container.AddObject( pl_object ));
 
                 game_objects.Add(Instantiate(pl_object.prefab));
+
+                EditorUtility.SetDirty(container);
             }
 
             if ( GUILayout.Button("Magel") )
@@ -74,6 +79,8 @@ public class LevelCreateTool : EditorWindow
                 objects.Add(container.AddObject( ma_object ));
 
                 game_objects.Add(Instantiate(ma_object.prefab));
+
+                EditorUtility.SetDirty(container);
             }
 
             if ( GUILayout.Button("SpaceStation") )
@@ -89,13 +96,15 @@ public class LevelCreateTool : EditorWindow
                 objects.Add(container.AddObject( sp_object ));
 
                 game_objects.Add(Instantiate(sp_object.prefab));
+
+                EditorUtility.SetDirty(container);
             }
 
             GUILayout.Space(20);
 
             if (GUILayout.Button("Delete"))
             {
-                
+                AssetDatabase.DeleteAsset(resource_path + level_container_name);
             }
         }
 

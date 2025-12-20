@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 112f41111337d7545b812c426a35dc06, type: 3}
   m_Name: Magel1
-  m_EditorClassIdentifier: Assembly-CSharp::MagelObject
+  m_EditorClassIdentifier: 
   prefab: {fileID: 5607886237831401425, guid: 32e8a7a3f3cee5543a49b030e92ddbed, type: 3}

@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8bf9337f232c6c43b27774e2c4aca30, type: 3}
   m_Name: Level1
   m_EditorClassIdentifier: 
-  camera_index: 1
+  camera_index: 0
   level_objects:
   - pos: {x: 0, y: 0, z: 0}
-    gameable_object: {fileID: 11400000, guid: 87d99a0775c23c341b2907fc6b10887c, type: 2}
-  - pos: {x: 3, y: 1, z: 10}
-    gameable_object: {fileID: 11400000, guid: fb0723349ad8dd94ca0ed1abc727c5ff, type: 2}
-  - pos: {x: -10, y: 5, z: 3}
+    gameable_object: {fileID: 11400000, guid: 973949844f75dcc448da1edaf231bed3, type: 2}
+  - pos: {x: 0, y: 10, z: 0}
     gameable_object: {fileID: 11400000, guid: 578551cf32e7ab749bfbfd28d14cb031, type: 2}
-  - pos: {x: 0, y: 0, z: 40}
+  - pos: {x: 10, y: 0, z: 10}
     gameable_object: {fileID: 11400000, guid: ebb260ece6cc704448d0d8604f8cfbc9, type: 2}
+  - pos: {x: 40, y: 0, z: 0}
+    gameable_object: {fileID: 11400000, guid: fb0723349ad8dd94ca0ed1abc727c5ff, type: 2}

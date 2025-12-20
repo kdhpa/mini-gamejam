@@ -7,8 +7,13 @@ using System;
 public class PlaneObject : GameableObject, IPathObject
 {
     public Vector3 size;
-    public bool is_size_random;
     public MagelObject magel_object;
+
+    public float rotSpeed;
+    public float revSpeed;
+
+    public Vector3 revDir;
+    public Vector3 rotDir;
 
     protected const string path = "Assets/2. Prefab/Planet.prefab"; 
     public string PATH
