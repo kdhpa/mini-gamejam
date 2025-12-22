@@ -56,5 +56,6 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Minimalism.sln"
+    "dotnet.defaultSolution": "Minimalism.sln",
+    "dotnet.debug.suppressInvalidDebugTypeWarning": true
 }

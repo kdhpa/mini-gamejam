@@ -1,4 +1,6 @@
+using System.Collections;
 using System.Numerics;
+using NUnit.Framework.Constraints;
 using UnityEngine;
 
 public class ControlManager : MonoBehaviour
@@ -16,6 +18,16 @@ public class ControlManager : MonoBehaviour
         createObject = GameObject.FindGameObjectWithTag(createObjectTagName);
         solarSystemObject = GameObject.FindGameObjectWithTag(solarSystemObjectTagName);
         SettingGame(LevelSystem.Instance.CurContainer);
+
+        EventManager.Instance.AddEventListner("Clear", (e,args) =>
+        {
+            Clear();
+        });
+
+        EventManager.Instance.AddEventListner("Fail", (e,args) =>
+        {
+            Over();
+        });
     }
 
     public void SettingGame( LevelContainer container )
@@ -56,5 +68,22 @@ public class ControlManager : MonoBehaviour
         {
             CameraManager.Instance.ActiveCamera(index);
         }
+    }
+
+    private void Clear()
+    {
+        Time.timeScale = 0.3f;
+    }
+
+    private void Over()
+    {
+        Time.timeScale = 0.3f;
+        StartCoroutine(End());
+    }
+
+    private IEnumerator End()
+    {
+        yield return new WaitForSeconds(5f);
+        Time.timeScale = 1f;
     }
 }

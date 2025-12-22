@@ -1,4 +1,4 @@
 
-public class UpCamera : CameraObject
+public class UpCamera : PlayerCamera
 {
 }

@@ -1,16 +1,22 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FowardCamera : CameraObject
+public class FowardCamera : PlayerCamera
 {
     private Slider gasSlider;
-    private void Start()
+
+    protected override void Start()
     {
-        gasSlider = GetComponent<Slider>();
+        base.Start();
+        gasSlider = GetComponentInChildren<Slider>();
+        EventManager.Instance.AddEventListner<GasChangeEventArgs>("GasChange",GasChange);
     }
 
-    private void GasChange(float slider)
+    private void GasChange(object sender, GasChangeEventArgs change_args)
     {
-        
+        if (change_args == null) return;
+        gasSlider.maxValue = change_args.MaxGas;
+        gasSlider.value = change_args.CurrentGas;
     }
 }

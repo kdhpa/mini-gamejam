@@ -9,8 +9,12 @@ public class CamSwitchScrollView : MonoBehaviour
     public GameObject prefab;
     private List<GameObject> gameObjects = new List<GameObject>();
     private List<CameraItemUI> camItemUIs = new List<CameraItemUI>();
+    private CameraItemUI currentItem;
+    private int curIndex = 0;
+    private int maxIndex = 0;
 
     public List<CameraItemUI> CAMITEMS => camItemUIs;
+    public CameraItemUI CURRENTITEM => currentItem;
 
     public void initScrollView()
     {
@@ -24,6 +28,52 @@ public class CamSwitchScrollView : MonoBehaviour
             camera_item_ui.SettingCam(camera_object[i]);
 
             camItemUIs.Add(camera_item_ui);
+            maxIndex++;
+        }
+
+        if (!currentItem)
+        {
+            currentItem = camItemUIs[0];
+            SelectItem();
+        }
+    }
+
+    public void Select( int direction )
+    {
+        int max_index = maxIndex - 1;
+        if ( curIndex + direction < 0 )
+        {
+            curIndex = max_index ;
+            SelectItem();
+            return;
+        }
+
+        if ( curIndex + direction > max_index )
+        {
+            curIndex = 0;
+            SelectItem();
+            return;
+        }
+
+        curIndex = curIndex + direction;
+        SelectItem();
+    }
+
+    private void SelectItem()
+    {
+        if ( camItemUIs.Count < curIndex || curIndex < 0  )
+            return;
+
+        if (currentItem)
+        {
+            //prev초기화
+            currentItem.Select(false);
+        }
+        
+        currentItem = camItemUIs[curIndex];
+        if (currentItem)
+        {
+            currentItem.Select(true);
         }
     }
 }

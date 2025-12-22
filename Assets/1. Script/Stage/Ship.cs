@@ -1,5 +1,13 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+
+public class GasChangeEventArgs : EventArgs
+{
+    public float CurrentGas { get; set; }
+    public float MaxGas { get; set; }
+    public float Percentage => MaxGas > 0 ? CurrentGas / MaxGas : 0;
+}
 
 public class Ship : CameraAttachObject
 {
@@ -16,6 +24,8 @@ public class Ship : CameraAttachObject
 
     private InputAction moveAction;
     private InputAction viewAction;
+    private InputAction dockAction;
+    private InputAction brakeAction;
 
     private Camera fowardCam;
 
@@ -26,6 +36,9 @@ public class Ship : CameraAttachObject
     public Vector3 angularVelocity;
 
     private MeshRenderer[] meshRenders;
+
+    private bool isDestory = false;
+    private bool isDock = false;
     protected override void Awake()
     {
         base.Awake();
@@ -47,33 +60,54 @@ public class Ship : CameraAttachObject
     {
         maxGas = ship_object.maxGas;
         gas = maxGas;
+        gasSpeed = ship_object.gasSpeed;
     }
 
     private void Start()
     {
         fowardCam = cameraDic["FowardCamera"].CAMERA;
+        EventManager.Instance.AddEventListner("Fail", DestoryEvent);
     }
 
     private void InputSetting()
     {
         moveAction = input.actions.FindAction("Move");
         viewAction = input.actions.FindAction("Look");
+        dockAction = input.actions.FindAction("Dock");
+
+        dockAction.performed += Dock;
     }
 
     private void Update()
     {
+        if(isDestory) return;
         moveVec = moveAction.ReadValue<Vector3>();
         rotateVec = viewAction.ReadValue<Vector2>();
 
         if (moveVec != Vector3.zero)
         {
-            Gas();
+            Jet();
         }
     }
     private void FixedUpdate()
     {
+        if(isDestory) return;
+
+        CheckDock();
         Rolling();
         Move();
+    }
+
+    private void CheckDock()
+    {
+        if (Physics.Raycast(this.transform.position, Vector3.down, 10, LayerMask.GetMask("Dock")))
+        {
+            isDock = true;
+        }
+        else
+        {
+            isDock = false;
+        }
     }
 
     private void Move()
@@ -96,6 +130,7 @@ public class Ship : CameraAttachObject
 
         rigid.linearVelocity = velocity;
     }
+
     private void Rolling()
     {
         Vector3 input = new Vector3(
@@ -123,12 +158,36 @@ public class Ship : CameraAttachObject
 
         transform.rotation = newRot;
     }
-    private void Gas()
+
+    private void Jet()
     {
-        gas -= gasSpeed * Time.deltaTime;
+        gas = gas - ( gasSpeed * Time.deltaTime );
+        GasChangeEventArgs args = new GasChangeEventArgs
+        {
+            CurrentGas = gas,
+            MaxGas = maxGas
+        };
+
+        if (gas <= 0)
+        {
+            EventManager.Instance.Trigger("Fail", this);
+        }
+        else
+        {
+            EventManager.Instance.Trigger("GasChange", this, args);
+        }
     }
+
+    private void Dock(InputAction.CallbackContext context)
+    {
+        if (!isDock) return;
+
+        velocity += transform.up * -30;
+    }
+
     private void Destory()
     {
+        isDestory = true;
         for ( int i = 0; i<meshRenders.Length; i++)
         {
             GameObject game_object = meshRenders[i].gameObject;
@@ -137,13 +196,19 @@ public class Ship : CameraAttachObject
             collider.enabled = true;
             rigid.isKinematic = false;
 
-            Vector3 dir = new Vector3(Random.Range(-1, 1), Random.Range(-1,1), Random.Range(-1, 1));
+            Vector3 dir = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1,1), UnityEngine.Random.Range(-1, 1));
             rigid.AddForce(dir.normalized * 50);
         }
     }
+    private void DestoryEvent(object sender, EventArgs args)
+    {
+        if (isDestory) return;
+        Destory();
+    }
 
     private void OnCollisionEnter(Collision collision)
-    {   
-        Destory();
+    {
+        if (collision.gameObject.tag == "Dock") return;
+        EventManager.Instance.Trigger("Fail", this);
     }
 }

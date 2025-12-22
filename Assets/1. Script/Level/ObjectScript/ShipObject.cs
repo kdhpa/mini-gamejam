@@ -15,6 +15,7 @@ public class ShipObject : GameableObject, IPathObject
         }
     }
     public int maxGas;
+    public int gasSpeed;
 
     public void Init()
     {
