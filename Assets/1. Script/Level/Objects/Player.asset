@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 8237232905559390002, guid: 9537032def9c809488393c3315f95366, type: 3}
   maxGas: 100
+  gasSpeed: 3

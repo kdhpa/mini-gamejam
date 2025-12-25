@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 public class CamSwitchScrollView : MonoBehaviour
 {
@@ -13,8 +12,17 @@ public class CamSwitchScrollView : MonoBehaviour
     private int curIndex = 0;
     private int maxIndex = 0;
 
+    private ScrollRect scrollRect;
+    private RectTransform content;
+
     public List<CameraItemUI> CAMITEMS => camItemUIs;
     public CameraItemUI CURRENTITEM => currentItem;
+
+    private void Start()
+    {
+        scrollRect = GetComponent<ScrollRect>();
+        content = scrollRect.content;
+    }
 
     public void initScrollView()
     {
@@ -43,8 +51,9 @@ public class CamSwitchScrollView : MonoBehaviour
         int max_index = maxIndex - 1;
         if ( curIndex + direction < 0 )
         {
-            curIndex = max_index ;
+            curIndex = max_index;
             SelectItem();
+            content.anchoredPosition = new Vector2(0, 104 * max_index);
             return;
         }
 
@@ -52,10 +61,12 @@ public class CamSwitchScrollView : MonoBehaviour
         {
             curIndex = 0;
             SelectItem();
+            content.anchoredPosition = new Vector3(0, 0, 0);
             return;
         }
 
         curIndex = curIndex + direction;
+        content.anchoredPosition = new Vector3(0, 104 * curIndex + 20 * curIndex, 0);
         SelectItem();
     }
 

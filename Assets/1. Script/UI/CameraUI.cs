@@ -64,7 +64,7 @@ public class CameraUI : MonoBehaviour
             if ( i > 4 ) return;
             camItemUIs.Add(camScrollView.CAMITEMS[i]);
         }
-        currentLayout.Setting(camItemUIs);
+        currentLayout.Setting(camItemUIs.ToArray());
     }
 
     private void Tab( InputAction.CallbackContext callback_context )
@@ -83,11 +83,13 @@ public class CameraUI : MonoBehaviour
 
     private void Up(InputAction.CallbackContext callbackContext)
     {
+        if(!isTab) return;
         camScrollView.Select(1);
     }
 
     private void Down(InputAction.CallbackContext callbackContext)
     {
+        if(!isTab) return;
         camScrollView.Select(-1);
     }
     
@@ -131,6 +133,12 @@ public class CameraUI : MonoBehaviour
         tabObject.SetActive(is_active);
         basicObject.SetActive(!is_active);
 
+        CameraLayout pre_lvayout = currentLayout;
         currentLayout = is_active ? tabLayout : basicLayout;
+        if (pre_lvayout)
+        {
+            CameraItemUI[] cam_item_uis = pre_lvayout.ScreenItems;
+            currentLayout.Setting(cam_item_uis);
+        }
     }
 }

@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Numerics;
 using NUnit.Framework.Constraints;
 using UnityEngine;
@@ -21,12 +22,17 @@ public class ControlManager : MonoBehaviour
 
         EventManager.Instance.AddEventListner("Clear", (e,args) =>
         {
-            Clear();
+            ClearLevel();
         });
 
         EventManager.Instance.AddEventListner("Fail", (e,args) =>
         {
             Over();
+        });
+
+        EventManager.Instance.AddEventListner("Clean", (e,args) =>
+        {
+            Clear();
         });
     }
 
@@ -70,15 +76,24 @@ public class ControlManager : MonoBehaviour
         }
     }
 
-    private void Clear()
+    private void ClearLevel()
     {
         Time.timeScale = 0.3f;
+        StartCoroutine(End());
     }
 
     private void Over()
     {
         Time.timeScale = 0.3f;
         StartCoroutine(End());
+    }
+
+    private void Clear()
+    {
+        foreach( Transform trans in createObject.transform )
+        {
+            Destroy(trans.gameObject);
+        }
     }
 
     private IEnumerator End()

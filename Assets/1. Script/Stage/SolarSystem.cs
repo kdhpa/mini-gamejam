@@ -9,6 +9,11 @@ public class SolarSystem : MonoBehaviour
     private void Awake()
     {
         sun = GetComponentInChildren<Sun>();
+
+        EventManager.Instance.AddEventListner("Clean", (e,args) =>
+        {
+            Clear();
+        });
     }
 
     public void AddPlanet(Planet pl)
@@ -29,5 +34,10 @@ public class SolarSystem : MonoBehaviour
 
             planet_object.transform.RotateAround(sun_pos, pl.revDir.normalized, pl.revSpeed * Time.deltaTime);
         }
+    }
+
+    public void Clear()
+    {
+        planets.Clear();
     }
 }

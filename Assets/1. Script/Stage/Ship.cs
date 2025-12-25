@@ -9,6 +9,11 @@ public class GasChangeEventArgs : EventArgs
     public float Percentage => MaxGas > 0 ? CurrentGas / MaxGas : 0;
 }
 
+public class AxisChangeEventArgs : EventArgs
+{
+    public Vector3 axis;
+}
+
 public class Ship : CameraAttachObject
 {
     public int maxGas;
@@ -38,6 +43,7 @@ public class Ship : CameraAttachObject
     private MeshRenderer[] meshRenders;
 
     private bool isDestory = false;
+    private bool isClear = false;
     private bool isDock = false;
     protected override void Awake()
     {
@@ -67,6 +73,7 @@ public class Ship : CameraAttachObject
     {
         fowardCam = cameraDic["FowardCamera"].CAMERA;
         EventManager.Instance.AddEventListner("Fail", DestoryEvent);
+        EventManager.Instance.AddEventListner("Clear", ClearEvent);
     }
 
     private void InputSetting()
@@ -80,7 +87,7 @@ public class Ship : CameraAttachObject
 
     private void Update()
     {
-        if(isDestory) return;
+        if(isDestory || isClear) return;
         moveVec = moveAction.ReadValue<Vector3>();
         rotateVec = viewAction.ReadValue<Vector2>();
 
@@ -91,7 +98,7 @@ public class Ship : CameraAttachObject
     }
     private void FixedUpdate()
     {
-        if(isDestory) return;
+        if(isDestory || isClear) return;
 
         CheckDock();
         Rolling();
@@ -128,6 +135,8 @@ public class Ship : CameraAttachObject
 
         velocity += move_velocity;
 
+        EventManager.Instance.Trigger("AxisChange", this, new AxisChangeEventArgs(){ axis = velocity });
+
         rigid.linearVelocity = velocity;
     }
 
@@ -145,6 +154,7 @@ public class Ship : CameraAttachObject
         angularVelocity.y = Mathf.Clamp(angularVelocity.y, -30, 30);
 
         angularVelocity *= 0.98f;
+        EventManager.Instance.Trigger("RotateChange", this, new AxisChangeEventArgs(){ axis = angularVelocity });
 
         // // 회전 적용 (roll 축 제외)
         Quaternion q =
@@ -204,6 +214,16 @@ public class Ship : CameraAttachObject
     {
         if (isDestory) return;
         Destory();
+        rigid.linearVelocity = Vector3.zero;
+        rigid.isKinematic = true;
+    }
+
+    private void ClearEvent(object sender, EventArgs args)
+    {
+        if (isClear) return;
+        isClear = true;
+        rigid.linearVelocity = Vector3.zero;
+        rigid.isKinematic = true;
     }
 
     private void OnCollisionEnter(Collision collision)

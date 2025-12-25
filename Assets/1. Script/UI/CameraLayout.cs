@@ -12,15 +12,16 @@ public class CameraLayout : MonoBehaviour
     private CameraScreen[] camScreens;
 
     private CameraItemUI[] screenItems = new CameraItemUI[4];
+    public CameraItemUI[] ScreenItems => screenItems;
 
     private void Awake()
     {
         camScreens = this.GetComponentsInChildren<CameraScreen>();
     }
 
-    public void Setting(List<CameraItemUI> cameraItems )
+    public void Setting(CameraItemUI[] cameraItems )
     {
-        screenItems = cameraItems.ToArray();
+        screenItems = cameraItems;
         for (int i = 0; i<4; i++)
         {
             camScreens[i].Screen(screenItems[i]);
@@ -31,14 +32,18 @@ public class CameraLayout : MonoBehaviour
         CameraItemUI prev_item = screenItems[index];
         for (int i = 0; i < 4; i++)
         {
-            if (screenItems[i] == camItemUI)
+            CameraItemUI index_item = screenItems[i];
+            CameraObject cam_object = index_item.CamObject;
+            if (i != index && cam_object.id == camItemUI.CamObject.id)
             {
+                screenItems[i] = prev_item;
+                screenItems[index] = camItemUI;
+
                 camScreens[i].Screen(prev_item);
                 camScreens[index].Screen(camItemUI);
                 return;
             }
         }
-
         camScreens[index].Screen(camItemUI);
     }
 }

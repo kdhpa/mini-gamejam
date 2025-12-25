@@ -38,6 +38,12 @@ public class CameraManager : MonoSingleton<CameraManager>
         }
     }
 
+    public void clear()
+    {
+        attach_objects.Clear();
+        cam_objects.Clear();
+    }
+
     public bool isCameraObject( CameraAttachObject attach_obj )
     {
         return attach_obj != null && attach_obj is CameraAttachObject;
