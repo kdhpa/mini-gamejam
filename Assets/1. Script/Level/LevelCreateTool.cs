@@ -32,7 +32,7 @@ public class LevelCreateTool : EditorWindow
                 isStart = true;
                 container = CreateInstance<LevelContainer>();
 
-                string[] files = Directory.GetFiles(resource_path, "*.cs", SearchOption.AllDirectories);
+                string[] files = Directory.GetFiles(resource_path, "*.asset", SearchOption.AllDirectories);
                 int count = files.Length + 1;
 
                 level_container_name = "\\Level" + count + ".asset";
@@ -97,6 +97,17 @@ public class LevelCreateTool : EditorWindow
 
                 game_objects.Add(Instantiate(sp_object.prefab));
 
+                EditorUtility.SetDirty(container);
+            }
+
+            GUILayout.Space(20);
+
+            if ( GUILayout.Button("Apply") )
+            {
+                for(int i = 0; i<game_objects.Count; i++)
+                {
+                    container.level_objects[i].pos = game_objects[i].transform.position;
+                }
                 EditorUtility.SetDirty(container);
             }
 
