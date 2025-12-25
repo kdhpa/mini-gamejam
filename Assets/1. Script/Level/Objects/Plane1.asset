@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1e99e70087eb0e44925e00815c29c30, type: 3}
+  m_Name: Plane1
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 6321404138830158620, guid: 52ebe7a546a13d248bc0bbb0bb2de4e4, type: 3}
+  size: {x: 0, y: 0, z: 0}
+  is_size_random: 0
+  magel_object: {fileID: 0}
+  rotSpeed: 5
+  revSpeed: 5
+  revDir: {x: 0, y: -1, z: 0}
+  rotDir: {x: 0, y: 1, z: 0}
