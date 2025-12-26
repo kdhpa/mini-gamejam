@@ -4,7 +4,7 @@
 PlayerSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 28
-  productGUID: 6b7bb56f94422d04f9c9233708904c80
+  productGUID: 00000000000000000000000000000000
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
   AndroidEnableSustainedPerformanceMode: 0
@@ -252,8 +252,8 @@ PlayerSettings:
   iOSAutomaticallyDetectAndAddCapabilities: 1
   appleEnableProMotion: 0
   shaderPrecisionModel: 0
-  clonedFromGUID: 3c72c65a16f0acb438eed22b8b16c24a
-  templatePackageId: com.unity.template.urp-blank@17.0.11
+  clonedFromGUID: 4d205b1cd945c9248b0e546368fddbfd
+  templatePackageId: 
   templateDefaultScene: Assets/Scenes/SampleScene.unity
   useCustomMainManifest: 0
   useCustomLauncherManifest: 0
@@ -852,14 +852,14 @@ PlayerSettings:
   editorAssembliesCompatibilityLevel: 1
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: Minimalism
+  metroPackageName: mini-gamejam
   metroPackageVersion: 
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
   metroCertificateIssuer: 
   metroCertificateNotAfter: 0000000000000000
-  metroApplicationDescription: Minimalism
+  metroApplicationDescription: mini-gamejam
   wsaImages: {}
   metroTileShortName: 
   metroTileShowName: 0
@@ -933,7 +933,7 @@ PlayerSettings:
   cloudProjectId: 8698f637-c0d1-473c-b9ee-78b2c643c606
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: Minimalism
+  projectName: Estudo2 2025-03-20_15-04-05
   organizationId: jetmax68
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0

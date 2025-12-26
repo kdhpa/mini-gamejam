@@ -194,6 +194,7 @@ GameObject:
   - component: {fileID: 3706198472533978638}
   - component: {fileID: 4609917466564129240}
   - component: {fileID: 382600795319284833}
+  - component: {fileID: 6468964640364001000}
   m_Layer: 6
   m_Name: DockingObject
   m_TagString: Dock
@@ -279,6 +280,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &6468964640364001000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2353854328572259414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6aaa2442c08b39849ba460796e1b48c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DisplayName: 
+  ActivateOnStart: 1
 --- !u!1 &2990960021632869972
 GameObject:
   m_ObjectHideFlags: 0
