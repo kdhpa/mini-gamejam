@@ -16,6 +16,9 @@ public class AxisChangeEventArgs : EventArgs
 
 public class Ship : CameraAttachObject
 {
+    [SerializeField]
+    private FowardCamera fowardCamera;
+
     public int maxGas;
     public float gas;
     public int gasSpeed = 3;
@@ -136,6 +139,7 @@ public class Ship : CameraAttachObject
         velocity += move_velocity;
 
         EventManager.Instance.Trigger("AxisChange", this, new AxisChangeEventArgs(){ axis = velocity });
+        EventManager.Instance.Trigger("InputChange", this, new AxisChangeEventArgs(){ axis = input_move_vec });
 
         rigid.linearVelocity = velocity;
     }
