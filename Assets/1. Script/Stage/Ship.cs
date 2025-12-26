@@ -55,7 +55,7 @@ public class Ship : CameraAttachObject
         input = GetComponent<PlayerInput>();
 
         meshRenders = GetComponentsInChildren<MeshRenderer>();
-        for ( int i = 0; i<meshRenders.Length; i++)
+        for (int i = 0; i < meshRenders.Length; i++)
         {
             GameObject game_object = meshRenders[i].gameObject;
             MeshCollider collider = game_object.GetComponent<MeshCollider>();
@@ -65,9 +65,10 @@ public class Ship : CameraAttachObject
         InputSetting();
     }
 
-    public void Setting( ShipObject ship_object )
+    public void Setting(ShipObject ship_object, int _maxGas)
     {
-        maxGas = ship_object.maxGas;
+        // maxGas = ship_object.maxGas;
+        maxGas = _maxGas;
         gas = maxGas;
         gasSpeed = ship_object.gasSpeed;
     }
@@ -90,7 +91,7 @@ public class Ship : CameraAttachObject
 
     private void Update()
     {
-        if(isDestory || isClear) return;
+        if (isDestory || isClear) return;
         moveVec = moveAction.ReadValue<Vector3>();
         rotateVec = viewAction.ReadValue<Vector2>();
 
@@ -101,7 +102,7 @@ public class Ship : CameraAttachObject
     }
     private void FixedUpdate()
     {
-        if(isDestory || isClear) return;
+        if (isDestory || isClear) return;
 
         CheckDock();
         Rolling();
@@ -138,8 +139,8 @@ public class Ship : CameraAttachObject
 
         velocity += move_velocity;
 
-        EventManager.Instance.Trigger("AxisChange", this, new AxisChangeEventArgs(){ axis = velocity });
-        EventManager.Instance.Trigger("InputChange", this, new AxisChangeEventArgs(){ axis = input_move_vec });
+        EventManager.Instance.Trigger("AxisChange", this, new AxisChangeEventArgs() { axis = velocity });
+        EventManager.Instance.Trigger("InputChange", this, new AxisChangeEventArgs() { axis = input_move_vec });
 
         rigid.linearVelocity = velocity;
     }
@@ -158,7 +159,7 @@ public class Ship : CameraAttachObject
         angularVelocity.y = Mathf.Clamp(angularVelocity.y, -30, 30);
 
         angularVelocity *= 0.98f;
-        EventManager.Instance.Trigger("RotateChange", this, new AxisChangeEventArgs(){ axis = angularVelocity });
+        EventManager.Instance.Trigger("RotateChange", this, new AxisChangeEventArgs() { axis = angularVelocity });
 
         // // 회전 적용 (roll 축 제외)
         Quaternion q =
@@ -175,7 +176,7 @@ public class Ship : CameraAttachObject
 
     private void Jet()
     {
-        gas = gas - ( gasSpeed * Time.deltaTime );
+        gas = gas - (gasSpeed * Time.deltaTime);
         GasChangeEventArgs args = new GasChangeEventArgs
         {
             CurrentGas = gas,
@@ -202,7 +203,7 @@ public class Ship : CameraAttachObject
     private void Destory()
     {
         isDestory = true;
-        for ( int i = 0; i<meshRenders.Length; i++)
+        for (int i = 0; i < meshRenders.Length; i++)
         {
             GameObject game_object = meshRenders[i].gameObject;
             Rigidbody rigid = game_object.GetComponent<Rigidbody>();
@@ -210,7 +211,7 @@ public class Ship : CameraAttachObject
             collider.enabled = true;
             rigid.isKinematic = false;
 
-            Vector3 dir = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1,1), UnityEngine.Random.Range(-1, 1));
+            Vector3 dir = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1));
             rigid.AddForce(dir.normalized * 50);
         }
     }

@@ -67,7 +67,7 @@ public class ControlManager : MonoBehaviour
             Ship ship = game_object.GetComponent<Ship>();
             if (ship)
             {
-                ship.Setting(gameable_object as ShipObject);
+                ship.Setting(gameable_object as ShipObject, container.maxGas);
             }
         }
         for ( int index = 0; index < 4; index++ )

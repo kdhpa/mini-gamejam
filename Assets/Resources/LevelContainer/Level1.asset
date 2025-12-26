@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Level1
   m_EditorClassIdentifier: 
   camera_index: 1
-  max_Gas: 0
+  maxGas: 15
   level_objects:
   - pos: {x: 0, y: 0, z: 0}
     gameable_object: {fileID: 11400000, guid: 973949844f75dcc448da1edaf231bed3, type: 2}
