@@ -231,7 +231,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dockingDistance: 0.3
   maxDockingRange: 3
-  successThreshold: 98
+  successThreshold: 93
 --- !u!135 &4609917466564129240
 SphereCollider:
   m_ObjectHideFlags: 0

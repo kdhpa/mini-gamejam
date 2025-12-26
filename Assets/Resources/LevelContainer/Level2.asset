@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d8bf9337f232c6c43b27774e2c4aca30, type: 3}
-  m_Name: Level1
+  m_Name: Level2
   m_EditorClassIdentifier: 
   camera_index: 1
   max_Gas: 0
   level_objects:
   - pos: {x: 0, y: 0, z: 0}
     gameable_object: {fileID: 11400000, guid: 973949844f75dcc448da1edaf231bed3, type: 2}
-  - pos: {x: 0, y: -3, z: 0}
+  - pos: {x: 0, y: -3, z: -20}
     gameable_object: {fileID: 11400000, guid: f87db371c55a4ff41b646db306befffe, type: 2}

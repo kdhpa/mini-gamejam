@@ -7,6 +7,9 @@ using UnityEngine;
 public class LevelContainer : ScriptableObject
 {
     public int camera_index = 1;
+
+    public int max_Gas = 0;
+
     public List<LevelObject> level_objects = new List<LevelObject>();
 
     public LevelObject AddObject( GameableObject _object )

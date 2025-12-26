@@ -23,11 +23,13 @@ public class LevelCreateTool : EditorWindow
 
     private string level_container_name = string.Empty;
 
+    private LevelContainer targetSO = null;
+
     private void OnGUI()
     {
         if (!isStart)
         {
-            if ( GUILayout.Button("시작") )
+            if (GUILayout.Button("시작"))
             {
                 isStart = true;
                 container = CreateInstance<LevelContainer>();
@@ -42,58 +44,78 @@ public class LevelCreateTool : EditorWindow
 
                 EditorUtility.SetDirty(container);
             }
+            
+            GUILayout.Space(20);
+            GUILayout.Label("레벨 SO", EditorStyles.boldLabel);
+        
+            // 1. SO를 드래그 앤 드롭 또는 선택할 수 있는 필드
+            targetSO = (LevelContainer)EditorGUILayout.ObjectField(
+                "Target SO", 
+                targetSO, 
+                typeof(LevelContainer), 
+                false
+            );
+
+            if (GUILayout.Button("Load"))
+            {
+                if (targetSO != null)
+                {
+                    isStart = true;
+                    container = targetSO;
+                }
+            }
         }
 
-        if ( isStart )
+        if (isStart)
         {
             string _path = path + "\\Objects";
             string name = string.Empty;
-            
-            if ( GUILayout.Button("Planet") )
+
+            if (GUILayout.Button("Planet"))
             {
                 PlaneObject pl_object = CreateInstance<PlaneObject>();
                 pl_object.Init();
                 name = "Plane";
 
                 string secound_path = $"{name}{GetFileCount(name)}.asset";
-                string combine_path = Path.Combine( _path, secound_path );
+                string combine_path = Path.Combine(_path, secound_path);
 
                 AssetDatabase.CreateAsset(pl_object, combine_path);
-                objects.Add(container.AddObject( pl_object ));
+                objects.Add(container.AddObject(pl_object));
 
                 game_objects.Add(Instantiate(pl_object.prefab));
 
                 EditorUtility.SetDirty(container);
             }
 
-            if ( GUILayout.Button("Magel") )
+            if (GUILayout.Button("Magel"))
             {
                 MagelObject ma_object = CreateInstance<MagelObject>();
                 ma_object.Init();
                 name = "Magel";
 
-                string secound_path =  $"{name}{GetFileCount(name)}.asset";
-                string combine_path = Path.Combine( _path, secound_path );
+                string secound_path = $"{name}{GetFileCount(name)}.asset";
+                string combine_path = Path.Combine(_path, secound_path);
 
                 AssetDatabase.CreateAsset(ma_object, combine_path);
-                objects.Add(container.AddObject( ma_object ));
+                objects.Add(container.AddObject(ma_object));
 
                 game_objects.Add(Instantiate(ma_object.prefab));
 
                 EditorUtility.SetDirty(container);
             }
 
-            if ( GUILayout.Button("SpaceStation") )
+            if (GUILayout.Button("SpaceStation"))
             {
-                SpaceStationObject sp_object=  CreateInstance<SpaceStationObject>();
+                SpaceStationObject sp_object = CreateInstance<SpaceStationObject>();
                 sp_object.Init();
                 name = "SpaceStation";
 
-                string secound_path =  $"{name}{GetFileCount(name)}.asset";
-                string combine_path = Path.Combine( _path, secound_path );
+                string secound_path = $"{name}{GetFileCount(name)}.asset";
+                string combine_path = Path.Combine(_path, secound_path);
 
-                AssetDatabase.CreateAsset( sp_object, combine_path );
-                objects.Add(container.AddObject( sp_object ));
+                AssetDatabase.CreateAsset(sp_object, combine_path);
+                objects.Add(container.AddObject(sp_object));
 
                 game_objects.Add(Instantiate(sp_object.prefab));
 
@@ -102,21 +124,19 @@ public class LevelCreateTool : EditorWindow
 
             GUILayout.Space(20);
 
-            if ( GUILayout.Button("Apply") )
+            if (GUILayout.Button("Apply"))
             {
-                for(int i = 0; i<game_objects.Count; i++)
+                for (int i = 0; i < game_objects.Count; i++)
                 {
                     container.level_objects[i].pos = game_objects[i].transform.position;
                 }
                 EditorUtility.SetDirty(container);
             }
 
-            GUILayout.Space(20);
-
             if (GUILayout.Button("Delete"))
             {
                 AssetDatabase.DeleteAsset(resource_path + level_container_name);
-            }
+            }            
         }
 
     }
