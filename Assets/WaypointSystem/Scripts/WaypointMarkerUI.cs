@@ -24,7 +24,6 @@ namespace WrightAngle.Waypoint
         // Cached components for performance
         private RectTransform rectTransform;
         private Vector3 initialScale; // Store the initial scale of the marker from the prefab
-        private Quaternion initialTextRotation = Quaternion.identity; // Store initial rotation if needed, but we'll force it upright.
 
         private void Awake()
         {
@@ -64,7 +63,9 @@ namespace WrightAngle.Waypoint
         /// <param name="cam">The reference camera used for calculations.</param>
         /// <param name="settings">The active WaypointSettings asset providing configuration.</param>
         /// <param name="distanceToTarget">The world-space distance from the camera to the waypoint target.</param>
-        public void UpdateDisplay(Vector3 screenPosition, bool isOnScreen, bool isBehindCamera, Camera cam, WaypointSettings settings, float distanceToTarget)
+        /// <param name="canvas">The parent Canvas component.</param>
+        /// <param name="uiCamera">The UI camera for Screen Space - Camera mode (can be null for Overlay mode).</param>
+        public void UpdateDisplay(Vector3 screenPosition, bool isOnScreen, bool isBehindCamera, Camera cam, WaypointSettings settings, float distanceToTarget, Canvas canvas, Camera uiCamera)
         {
             // Safety checks for required components and settings
             if (settings == null || rectTransform == null || cam == null) // markerIcon can be null if not essential
@@ -72,6 +73,9 @@ namespace WrightAngle.Waypoint
                 if (gameObject.activeSelf) gameObject.SetActive(false); // Hide if setup is invalid
                 return;
             }
+
+            // Convert screen position to canvas position based on render mode
+            Vector3 canvasPosition = ConvertScreenToCanvasPosition(screenPosition, canvas, uiCamera);
 
             // Apply distance scaling if enabled (also handles icon visibility)
             bool isMarkerVisible = ApplyDistanceScaling(settings, distanceToTarget, isOnScreen);
@@ -94,8 +98,9 @@ namespace WrightAngle.Waypoint
             if (isOnScreen)
             {
                 // --- Target ON Screen ---
-                rectTransform.position = screenPosition;
-                rectTransform.rotation = Quaternion.identity; // Ensure parent (main marker) is upright on screen
+                rectTransform.position = canvasPosition;
+                // Ensure parent (main marker) is upright based on canvas mode
+                SetUprightRotation(canvas);
                 if (markerIcon != null && !markerIcon.gameObject.activeSelf && isMarkerVisible) markerIcon.gameObject.SetActive(true);
             }
             else // --- Target OFF Screen ---
@@ -135,7 +140,9 @@ namespace WrightAngle.Waypoint
                 }
 
                 Vector2 clampedPosition = IntersectWithScreenBounds(screenCenter, positionToClamp, screenBounds);
-                rectTransform.position = new Vector3(clampedPosition.x, clampedPosition.y, 0f);
+                Vector3 clampedScreenPos = new Vector3(clampedPosition.x, clampedPosition.y, screenPosition.z);
+                Vector3 clampedCanvasPos = ConvertScreenToCanvasPosition(clampedScreenPos, canvas, uiCamera);
+                rectTransform.position = clampedCanvasPos;
 
                 if (markerIcon != null && directionForRotation.sqrMagnitude > 0.001f)
                 {
@@ -144,12 +151,12 @@ namespace WrightAngle.Waypoint
                     // The main rectTransform is positioned, the icon within it can rotate.
                     // Or, if the main rectTransform rotates, text needs to counter-rotate.
                     // Let's assume the rectTransform (this component's GO) is what rotates for off-screen.
-                    rectTransform.rotation = Quaternion.Euler(0, 0, angle + flipAngle - 90f);
+                    SetRotationForOffScreen(canvas, angle + flipAngle - 90f);
                 }
                 else if (markerIcon != null) // Default rotation if direction is zero
                 {
                     float flipAngle = settings.FlipOffScreenMarkerY ? 180f : 0f;
-                    rectTransform.rotation = Quaternion.Euler(0, 0, -180f + flipAngle);
+                    SetRotationForOffScreen(canvas, -180f + flipAngle);
                 }
             }
 
@@ -240,8 +247,6 @@ namespace WrightAngle.Waypoint
                 distanceTextElement.text = $"{distanceString}{suffix}";
 
                 // Ensure text remains upright regardless of parent (rectTransform) rotation
-                // This sets its world rotation to identity, making it screen-aligned.
-                distanceTextElement.rectTransform.rotation = Quaternion.identity;
             }
             else
             {
@@ -249,6 +254,142 @@ namespace WrightAngle.Waypoint
             }
         }
 
+
+        /// <summary>
+        /// Sets the marker to upright rotation based on canvas render mode.
+        /// </summary>
+        private void SetUprightRotation(Canvas canvas)
+        {
+            if (canvas == null)
+            {
+                rectTransform.rotation = Quaternion.identity;
+                return;
+            }
+
+            if (canvas.renderMode == RenderMode.ScreenSpaceOverlay)
+            {
+                // For Screen Space - Overlay, use identity rotation
+                rectTransform.rotation = Quaternion.identity;
+            }
+            else if (canvas.renderMode == RenderMode.ScreenSpaceCamera || canvas.renderMode == RenderMode.WorldSpace)
+            {
+                // For Screen Space - Camera and World Space, align with canvas
+                rectTransform.rotation = Quaternion.identity;
+                rectTransform.localRotation = Quaternion.identity;
+            }
+        }
+
+        /// <summary>
+        /// Sets the text element to upright rotation, compensating for parent rotation.
+        /// This ensures distance text remains readable regardless of marker rotation.
+        /// </summary>
+        private void SetTextUprightRotation(RectTransform textRect)
+        {
+            if (textRect == null) return;
+
+            // Get the parent canvas to determine render mode
+            Canvas canvas = rectTransform.GetComponentInParent<Canvas>();
+            if (canvas == null)
+            {
+                textRect.rotation = Quaternion.identity;
+                return;
+            }
+
+            if (canvas.renderMode == RenderMode.ScreenSpaceOverlay)
+            {
+                // For Overlay mode, simply set world rotation to identity
+                textRect.rotation = Quaternion.identity;
+            }
+            else if (canvas.renderMode == RenderMode.ScreenSpaceCamera || canvas.renderMode == RenderMode.WorldSpace)
+            {
+                // For Camera/World Space mode, we need to counter-rotate the parent's rotation
+                // First, reset to identity in local space
+                textRect.localRotation = Quaternion.identity;
+
+                // Then counter-rotate to compensate for parent's world rotation
+                // This keeps the text upright in screen space
+                Quaternion parentWorldRotation = rectTransform.rotation;
+                textRect.rotation = Quaternion.Inverse(parentWorldRotation) * textRect.rotation;
+            }
+        }
+
+        /// <summary>
+        /// Sets rotation for off-screen indicators based on canvas render mode.
+        /// </summary>
+        private void SetRotationForOffScreen(Canvas canvas, float zAngle)
+        {
+            if (canvas == null)
+            {
+                rectTransform.rotation = Quaternion.Euler(0, 0, zAngle);
+                return;
+            }
+
+            if (canvas.renderMode == RenderMode.ScreenSpaceOverlay)
+            {
+                // For Screen Space - Overlay, apply Z rotation directly
+                rectTransform.rotation = Quaternion.Euler(0, 0, zAngle);
+            }
+            else if (canvas.renderMode == RenderMode.ScreenSpaceCamera || canvas.renderMode == RenderMode.WorldSpace)
+            {
+                // For Screen Space - Camera and World Space, use local rotation
+                rectTransform.localRotation = Quaternion.Euler(0, 0, zAngle);
+            }
+        }
+
+        /// <summary>
+        /// Converts screen-space position to canvas-space position based on the canvas render mode.
+        /// Handles both Screen Space - Overlay and Screen Space - Camera modes.
+        /// </summary>
+        private Vector3 ConvertScreenToCanvasPosition(Vector3 screenPosition, Canvas canvas, Camera uiCamera)
+        {
+            if (canvas == null)
+            {
+                return screenPosition; // Fallback to screen position if canvas is null
+            }
+
+            if (canvas.renderMode == RenderMode.ScreenSpaceOverlay)
+            {
+                // For Screen Space - Overlay, screen position is already in the correct space
+                return screenPosition;
+            }
+            else if (canvas.renderMode == RenderMode.ScreenSpaceCamera)
+            {
+                // For Screen Space - Camera, we need to convert through the UI camera
+                if (uiCamera == null)
+                {
+                    Debug.LogWarning("WaypointMarkerUI: UI Camera is null for Screen Space - Camera mode. Using screen position as fallback.", this);
+                    return screenPosition;
+                }
+
+                // Convert screen point to world point on the canvas plane
+                RectTransformUtility.ScreenPointToWorldPointInRectangle(
+                    canvas.GetComponent<RectTransform>(),
+                    screenPosition,
+                    uiCamera,
+                    out Vector3 worldPosition
+                );
+
+                return worldPosition;
+            }
+            else // RenderMode.WorldSpace
+            {
+                // For World Space, similar to Screen Space - Camera
+                if (uiCamera == null)
+                {
+                    Debug.LogWarning("WaypointMarkerUI: UI Camera is null for World Space mode. Using screen position as fallback.", this);
+                    return screenPosition;
+                }
+
+                RectTransformUtility.ScreenPointToWorldPointInRectangle(
+                    canvas.GetComponent<RectTransform>(),
+                    screenPosition,
+                    uiCamera,
+                    out Vector3 worldPosition
+                );
+
+                return worldPosition;
+            }
+        }
 
         /// <summary>
         /// Calculates the exact intersection point of a line (from screen center towards a target point)

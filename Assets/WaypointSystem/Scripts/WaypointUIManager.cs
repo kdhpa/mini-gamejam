@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Pool; // Required for efficient object pooling
 using System.Collections.Generic;
+using UnityEngine.SocialPlatforms;
 
 namespace WrightAngle.Waypoint
 {
@@ -25,6 +26,8 @@ namespace WrightAngle.Waypoint
         [SerializeField] private RectTransform markerParentCanvas;
 
         // --- Internal State ---
+        private Canvas parentCanvas; // Cached Canvas component reference
+        private Camera uiCamera; // Cached UI Camera for Screen Space - Camera mode
         private ObjectPool<WaypointMarkerUI> markerPool; // Efficiently reuses marker UI GameObjects.
         // Collections to manage active targets and their corresponding markers.
         private List<WaypointTarget> activeTargetList = new List<WaypointTarget>(); // Used for efficient iteration.
@@ -50,6 +53,19 @@ namespace WrightAngle.Waypoint
 
             // Cache valid references.
             _cachedWaypointCamera = waypointCamera;
+
+            // Cache Canvas and UI Camera for Screen Space - Camera mode
+            parentCanvas = markerParentCanvas.GetComponentInParent<Canvas>();
+            if (parentCanvas.renderMode == RenderMode.ScreenSpaceCamera)
+            {
+                uiCamera = parentCanvas.worldCamera;
+                if (uiCamera == null)
+                {
+                    Debug.LogWarning($"<b>[{gameObject.name}] WaypointUIManager:</b> Canvas is set to 'Screen Space - Camera' mode but has no camera assigned. Attempting to use main camera.", this);
+                    uiCamera = Camera.main;
+                }
+            }
+
             // Set up the object pool for marker UI elements.
             InitializePool();
 
@@ -161,7 +177,7 @@ namespace WrightAngle.Waypoint
 
                     // --- Update Marker Visuals ---
                     // Call the marker's UpdateDisplay method to set its position, rotation, and scale.
-                    markerInstance.UpdateDisplay(screenPos, isOnScreen, isBehindCamera, _cachedWaypointCamera, settings, distanceToTarget);
+                    markerInstance.UpdateDisplay(screenPos, isOnScreen, isBehindCamera, _cachedWaypointCamera, settings, distanceToTarget, parentCanvas, uiCamera);
                 }
                 else // Marker should not be shown (e.g., off-screen and indicators disabled).
                 {
