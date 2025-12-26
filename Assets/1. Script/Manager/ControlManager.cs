@@ -64,6 +64,12 @@ public class ControlManager : MonoBehaviour
                 planet.SettingPlanet(gameable_object as PlaneObject);
             }
 
+            Station station = game_object.GetComponent<Station>();
+            if (station)
+            {
+                station.Setting(gameable_object as SpaceStationObject);
+            }
+
             Ship ship = game_object.GetComponent<Ship>();
             if (ship)
             {
