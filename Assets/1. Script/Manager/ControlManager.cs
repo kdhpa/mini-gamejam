@@ -14,11 +14,17 @@ public class ControlManager : MonoBehaviour
     private string solarSystemObjectTagName;
     private GameObject solarSystemObject;
 
+    private bool testMode = false;
+
     private void Awake()
     {
         createObject = GameObject.FindGameObjectWithTag(createObjectTagName);
         solarSystemObject = GameObject.FindGameObjectWithTag(solarSystemObjectTagName);
-        SettingGame(LevelSystem.Instance.CurContainer);
+
+        if (!testMode)
+        {
+            SettingGame(LevelSystem.Instance.CurContainer);
+        }
 
         EventManager.Instance.AddEventListner("Clear", (e,args) =>
         {

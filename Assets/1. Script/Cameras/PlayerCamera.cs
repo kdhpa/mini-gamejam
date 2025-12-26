@@ -7,7 +7,6 @@ public class PlayerCamera : CameraObject
     {
         EventManager.Instance.AddEventListner("Fail",DestoryEvent);
     }
-
     protected virtual void DestoryEvent(object sender, EventArgs args)
     {
         ActiveSignal(true);

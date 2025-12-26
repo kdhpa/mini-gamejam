@@ -70,6 +70,24 @@ public class CameraObject : MonoBehaviour, IPathObject
             Debug.Log($"CameraObject: prefab={prefab != null}, canvas={canvas != null}");
         }
     }
+    protected virtual void FixedUpdate()
+    {
+        if ( Physics.Raycast(this.transform.position, this.transform.forward, 1.3f, LayerMask.GetMask("Default") ) )
+        {
+            Debug.Log("Layer Everything");
+            cam.cullingMask = LayerMask.GetMask("UI");
+        }
+        else
+        {
+            Debug.Log("Layer Everything");
+            cam.cullingMask = LayerMask.GetMask("Everything");
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawLine(this.transform.position, this.transform.position + this.transform.forward * 1.3f);
+    }
 
     public void ActiveSignal(bool isActive)
     {
