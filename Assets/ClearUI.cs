@@ -43,31 +43,36 @@ public class ClearUI : EndUI
 
     public void ChangeResult(float gas, int maxGas)
     {
-        float gasPercent = maxGas / gas;
+        float gasPercent = gas / maxGas;
         ChangeGrade(gasPercent);
         ChageScore(gasPercent);
     }
 
     public void ChageScore(float gasPercent)
     {
-        int finScore = (int)(gasPercent * Math.Pow(10, 7));
+        int finScore = (int)(gasPercent * Math.Pow(10, 7))*2;
         ScoreText.text = finScore.ToString();
-
+        
+        int length = ScoreText.text.Length;
+        for(int i = 8-length; i > 0; i--)
+        {
+            ScoreText.text = "0" + ScoreText.text;
+        }
     }
 
     public void ChangeGrade(float gasPercent)
     {
-        if (gasPercent >= 0.5)
+        if (gasPercent >= 0.5f)
         {
             GradeText.color = GradeColors[0];
             GradeText.text = "A";
         }
-        else if (gasPercent >= 0.3)
+        else if (gasPercent >= 0.25f)
         {
             GradeText.color = GradeColors[1];
             GradeText.text = "B";
         }
-        else if (gasPercent >= 0.2)
+        else
         {
             GradeText.color = GradeColors[2];
             GradeText.text = "C";

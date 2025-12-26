@@ -23,7 +23,7 @@ public class EndUI : MonoBehaviour
 
     protected virtual IEnumerator ClearActive()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(0.5f);
         panel.SetActive(true);
     }
 
