@@ -28,6 +28,20 @@ public class LevelSystem : MonoSingleton<LevelSystem>
         SceneManager.LoadScene("GameScene");
     }
 
+    public void NextLevel()
+    {
+        if (!IsNextable()) return;
+
+        curIndex++;
+        _curContainer = containers[curIndex];
+        SceneManager.LoadScene("GameScene");
+    }
+
+    public void Restart()
+    {
+        SceneManager.LoadScene("GameScene");
+    }
+
     public bool IsNextable()
     {
         return containers.Length > curIndex + 1;

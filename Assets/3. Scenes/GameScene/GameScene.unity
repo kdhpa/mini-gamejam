@@ -3053,6 +3053,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: {fileID: 1370772973}
   tagName: Clear
+  clearPanel: {fileID: 1370772973}
+  nextButton: {fileID: 799553512}
 --- !u!1 &1242909467
 GameObject:
   m_ObjectHideFlags: 0

@@ -78,4 +78,15 @@ public class EventManager : Singleton<EventManager>
         if (eventHandlerDic.ContainsKey(event_name))
             (eventHandlerDic[event_name] as EventHandler<T>)?.Invoke(sender, args);
     }
+
+    public void Clear(string event_name)
+    {
+        if (eventHandlerDic.ContainsKey(event_name))
+            eventHandlerDic[event_name] = null;
+    }
+
+    public void AllClear()
+    {
+        eventHandlerDic.Clear();
+    }
 }
