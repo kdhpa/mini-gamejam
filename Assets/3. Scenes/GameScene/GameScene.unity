@@ -1025,7 +1025,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1070411590}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: EndUI, Assembly-CSharp
         m_MethodName: GoToHome
         m_Mode: 1
@@ -2420,7 +2420,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1070411590}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ClearUI, Assembly-CSharp
         m_MethodName: GoToNextLevel
         m_Mode: 1
@@ -3125,17 +3125,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 1070411588}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5353b1f2ed4223a4d9d403cd00bbc8d3, type: 3}
+  m_Script: {fileID: 11500000, guid: 3d4d180495feaa041ab01e91176e658c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   panel: {fileID: 1370772973}
   tagName: Clear
   GradeText: {fileID: 77305160}
   GradeColors:
-  - {r: 1, g: 0.854902, b: 0, a: 1}
-  - {r: 0, g: 0.67458296, b: 1, a: 1}
-  - {r: 0.6383731, g: 0.5235849, b: 0.6981132, a: 1}
+  - {r: 1, g: 0.8296218, b: 0, a: 1}
+  - {r: 0, g: 0.27265453, b: 1, a: 1}
+  - {r: 0.69945145, g: 0, b: 1, a: 1}
   ScoreText: {fileID: 178358792}
+  clearPanel: {fileID: 1370772973}
+  nextButton: {fileID: 799553512}
 --- !u!1 &1242909467
 GameObject:
   m_ObjectHideFlags: 0

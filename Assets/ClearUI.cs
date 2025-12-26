@@ -16,10 +16,22 @@ public class ClearUI : EndUI
     [SerializeField]
     private TextMeshProUGUI ScoreText;
 
+    [SerializeField]
+    private GameObject clearPanel;
+
+    [SerializeField]
+    private GameObject nextButton;
+
+    public void OnEnable()
+    {
+        nextButton.SetActive(LevelSystem.Instance.IsNextable());
+    }
+
     public void GoToNextLevel()
     {
-        if (!LevelSystem.Instance.IsNextable()) return;
-        LevelSystem.Instance.StartLevel(LevelSystem.Instance.curIndex + 1);
+        EventManager.Instance.AllClear();
+        LevelSystem.Instance.NextLevel();
+        clearPanel.SetActive(false);
     }
 
     protected override void End(object sender, EventArgs eventArgs)
