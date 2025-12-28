@@ -1,7 +1,8 @@
+
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
 using System.IO;
-using NUnit.Framework;
 using System.Collections.Generic;
 
 public class LevelCreateTool : EditorWindow
@@ -154,3 +155,4 @@ public class LevelCreateTool : EditorWindow
         
     }
 }
+#endif

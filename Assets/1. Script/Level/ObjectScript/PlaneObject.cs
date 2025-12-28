@@ -15,7 +15,7 @@ public class PlaneObject : GameableObject, IPathObject
     public Vector3 revDir;
     public Vector3 rotDir;
 
-    protected const string path = "Assets/2. Prefab/Planet.prefab"; 
+    protected const string path = "Planet"; 
     public string PATH
     {
         get
@@ -26,6 +26,6 @@ public class PlaneObject : GameableObject, IPathObject
 
     public void Init()
     {
-        prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+        prefab = Resources.Load<GameObject>(path);
     }
 }

@@ -6,7 +6,7 @@ using System;
 [Serializable]
 public class ShipObject : GameableObject, IPathObject
 {
-    private const string path = "Assets/2. Prefab/Player.prefab"; 
+    private const string path = "Player"; 
     public string PATH
     {
         get
@@ -19,6 +19,6 @@ public class ShipObject : GameableObject, IPathObject
 
     public void Init()
     {
-        prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+        prefab = Resources.Load<GameObject>(path);
     }
 }

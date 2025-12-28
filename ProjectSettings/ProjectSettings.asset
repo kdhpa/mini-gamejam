@@ -4,7 +4,7 @@
 PlayerSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 28
-  productGUID: 00000000000000000000000000000000
+  productGUID: 895d131dfee9ce6469f1144cd68dee84
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
   AndroidEnableSustainedPerformanceMode: 0
@@ -141,7 +141,8 @@ PlayerSettings:
   visionOSBundleVersion: 1.0
   tvOSBundleVersion: 1.0
   bundleVersion: 0.1.0
-  preloadedAssets: []
+  preloadedAssets:
+  - {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -933,7 +934,7 @@ PlayerSettings:
   cloudProjectId: 8698f637-c0d1-473c-b9ee-78b2c643c606
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: Estudo2 2025-03-20_15-04-05
+  projectName: Minimalism
   organizationId: jetmax68
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0

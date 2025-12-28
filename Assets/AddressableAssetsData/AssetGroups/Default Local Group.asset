@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: 
+  m_GroupName: Default Local Group
+  m_GUID: e5022a1958983b64abdbf477871609cc
+  m_SerializeEntries:
+  - m_GUID: 0b45088573323d24b81d84867264af29
+    m_Address: Assets/2. Prefab/NoSignalPanel.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2a366dffc2207f840931b8fdc0dc92be
+    m_Address: Assets/2. Prefab/Space Station.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 32e8a7a3f3cee5543a49b030e92ddbed
+    m_Address: Assets/2. Prefab/Maggel.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 52ebe7a546a13d248bc0bbb0bb2de4e4
+    m_Address: Assets/2. Prefab/Planet.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9537032def9c809488393c3315f95366
+    m_Address: Assets/2. Prefab/Player.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: f92a9f6851f84654e91f11d14e61cf4f, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 0c665a520d27bce4aa690960a63bbcbe, type: 2}
+    - {fileID: 11400000, guid: c90f408d1fce6a34e8419f05165c3686, type: 2}

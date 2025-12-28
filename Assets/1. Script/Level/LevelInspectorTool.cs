@@ -1,6 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
+#if UNITY_EDITOR
 [InitializeOnLoad]
 public class LevelInspectorTool
 {
@@ -40,3 +41,4 @@ public class LevelInspectorTool
         stableObject.rotation = target.rotation;
     }
 }
+#endif

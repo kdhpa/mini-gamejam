@@ -6,7 +6,7 @@ using System;
 [Serializable]
 public class MagelObject : GameableObject, IPathObject
 {
-    private const string path = "Assets/2. Prefab/Maggel.prefab"; 
+    private const string path = "Maggel"; 
     public string PATH
     {
         get
@@ -17,6 +17,6 @@ public class MagelObject : GameableObject, IPathObject
 
     public void Init()
     {
-        prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+        prefab = Resources.Load<GameObject>(path);
     }
 }
